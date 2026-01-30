@@ -1,0 +1,19 @@
+/* Global styles */
+
+/* Prevent text selection during drag on mobile */
+.cdk-drag-preview {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Prevent context menu on long press during drag */
+.cdk-drag, .cdk-drag-handle {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Ensure smooth dragging on iOS */
+.cdk-drop-list-dragging {
+  -webkit-overflow-scrolling: auto;
+}

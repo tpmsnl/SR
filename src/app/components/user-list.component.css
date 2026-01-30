@@ -1,0 +1,242 @@
+.user-list {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 8px;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  margin-bottom: 4px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: move;
+  will-change: transform;
+  /* Allow vertical scrolling on card, handle controls drag */
+  touch-action: pan-x;
+}
+
+.user-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.user-card.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Drag handle with hover/active states */
+.drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #333;
+  color: #fff;
+  border-radius: 4px;
+  flex-shrink: 0;
+  cursor: grab;
+  will-change: transform, background-color;
+  transition: background-color 0.15s ease-out;
+  /* Critical for mobile: prevent scrolling when touching handle */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.drag-handle:hover {
+  background: #555;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.drag-handle:active {
+  background: #111;
+  transform: scale(0.95);
+  cursor: grabbing;
+}
+
+.handle-icon {
+  font-size: 14px;
+  user-select: none;
+  pointer-events: none;
+}
+
+.user-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.user-id {
+  font-size: 11px;
+  color: #666;
+  min-width: 30px;
+  flex-shrink: 0;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.user-details strong {
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-email {
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-phone {
+  font-size: 11px;
+  color: #999;
+}
+
+/* Drag placeholder - no transitions, instant */
+.user-placeholder {
+  background: #e3f2fd;
+  border: 2px dashed #2196f3;
+  border-radius: 4px;
+  min-height: 48px;
+}
+
+/* Preview while dragging - GPU accelerated */
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  background: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  will-change: transform;
+}
+
+/* Smooth animation after drop */
+.cdk-drag-animating {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Other items moving out of the way */
+.user-list.cdk-drop-list-dragging .user-card:not(.cdk-drag-placeholder) {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Remove button */
+.remove-btn {
+  font-size: 11px;
+  padding: 4px 8px;
+  flex-shrink: 0;
+  min-height: 28px;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 576px) {
+  .user-list {
+    padding: 0 4px;
+  }
+
+  .user-card {
+    padding: 10px 8px;
+    gap: 6px;
+  }
+
+  .drag-handle {
+    width: 36px;
+    height: 36px;
+  }
+
+  .handle-icon {
+    font-size: 16px;
+  }
+
+  .user-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .user-id {
+    font-size: 10px;
+    min-width: auto;
+  }
+
+  .user-details strong {
+    font-size: 13px;
+  }
+
+  .user-email {
+    font-size: 11px;
+  }
+
+  .user-phone {
+    display: none;
+  }
+
+  .remove-btn {
+    font-size: 10px;
+    padding: 6px 10px;
+    min-height: 32px;
+  }
+
+  .user-placeholder {
+    min-height: 60px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .user-list {
+    /* Prevent pull-to-refresh interference */
+    overscroll-behavior: contain;
+  }
+
+  .user-card {
+    /* Allow page scroll, handle controls drag */
+    touch-action: pan-x;
+  }
+
+  .drag-handle {
+    width: 44px;
+    height: 44px;
+    /* Prevent all touch actions - handle is drag only */
+    touch-action: none;
+  }
+
+  .drag-handle:hover {
+    background: #333;
+    box-shadow: none;
+  }
+
+  .user-card:hover {
+    box-shadow: none;
+  }
+
+  .remove-btn {
+    min-height: 44px;
+    padding: 8px 12px;
+  }
+
+  /* Larger placeholder for touch */
+  .user-placeholder {
+    min-height: 64px;
+  }
+}

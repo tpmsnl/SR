@@ -1,0 +1,39 @@
+<div class="container mt-2">
+  <h5 class="mb-1">Waitlist</h5>
+  <small class="text-muted">Drag to reorder</small>
+
+  @if (loading()) {
+    <div class="alert alert-info py-1 px-2 mb-1 mt-2" style="font-size: 12px;">Loading...</div>
+  }
+  @if (saving()) {
+    <div class="alert alert-warning py-1 px-2 mb-1 mt-2" style="font-size: 12px;">Saving...</div>
+  }
+  @if (error()) {
+    <div class="alert alert-danger py-1 px-2 mb-1 mt-2" style="font-size: 12px;">{{ error() }}</div>
+  }
+
+  <div class="user-list mt-2" cdkDropList [cdkDropListDisabled]="isDisabled()" cdkDropListLockAxis="y" (cdkDropListDropped)="drop($event)">
+    @for (user of users(); track user.id) {
+      <div class="user-card" [class.disabled]="isDisabled()" cdkDrag cdkDragLockAxis="y">
+        <div class="user-placeholder" *cdkDragPlaceholder></div>
+        <div class="drag-handle" cdkDragHandle>
+          <span class="handle-icon">☰</span>
+        </div>
+        <div class="user-info">
+          <div class="user-id">#{{ user.id }}</div>
+          <div class="user-details">
+            <strong>Request: {{ user.requestID }}</strong>
+            <span class="user-email">Room: {{ user.roomID }}</span>
+            <span class="user-phone">{{ user.status }}</span>
+          </div>
+        </div>
+        <button
+          class="btn btn-sm btn-danger remove-btn"
+          [disabled]="isDisabled()"
+          (click)="deleteUser(user.id!)">
+          Remove
+        </button>
+      </div>
+    }
+  </div>
+</div>
