@@ -28,6 +28,7 @@ public class SR1 {
   private static final BlockingDeque<Integer> freeRooms = new LinkedBlockingDeque<>();
 
   private final AssignmentRepository assignmentRepository;
+  private static final ObjectMapper om = createObjectMapper();
 
   public SR1(AssignmentRepository assignmentRepository) {
     this.assignmentRepository = assignmentRepository;
@@ -42,20 +43,19 @@ public class SR1 {
     }
   }
 
-  @Nonnull
+  @NonNull
   private static ObjectMapper createObjectMapper() {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new JavaTimeModule());
-    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    return mapper;
+    return JsonMapper.builder()
+            .findAndAddModules()
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .build();
   }
 
   static List<Req> getRequests() throws IOException {
     ClassPathResource resource = new ClassPathResource("sample.json");
-    try (InputStream is = resource.getInputStream()) {
-      return om.readValue(is, new TypeReference<>() {
-      });
-    }
+      try (InputStream is = resource.getInputStream()) {
+        return om.readValue(is, new TypeReference<>() {});
+      }
   }
 
   public static void assignP1(List<Req> requests, Deque<Req> p1Waitlist) {
