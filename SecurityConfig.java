@@ -1,9 +1,10 @@
-package com.example.demo;
+package com.example.demo.configs;
 
 import org.jspecify.annotations.NonNull;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,12 +18,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain getSecChain(@NonNull HttpSecurity http) {
         http
+            .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(x-> x
                     .requestMatchers("/user/**").permitAll()
                     .requestMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             )
-            .formLogin(x-> x.defaultSuccessUrl("/hello", true))
+            .formLogin(x-> x.defaultSuccessUrl("/hello"))
             .httpBasic(basic -> {});
 
         return http.build();
